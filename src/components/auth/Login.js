@@ -6,6 +6,12 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!email.includes('@')) {
+      setError('Invalid email');
+    } else {
+      setError('');
+      alert('Login successful!');
+    }
   };
 
   return (
