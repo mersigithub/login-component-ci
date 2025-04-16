@@ -1,12 +1,10 @@
-name: Login Feature CI/CD
+name: Login Component CI/CD
 
 on:
   push:
     paths:
-      - 'src/components/auth/**'  # Only trigger on login changes
-  pull_request:
-    paths:
-      - 'src/components/auth/**'
+      - 'src/components/auth/Login.js'
+      - 'src/components/auth/Login.test.js'
 
 jobs:
   test:
@@ -17,30 +15,20 @@ jobs:
         with:
           node-version: '20'
       - run: npm install
-      - run: npm run test:login  # Runs only login tests
+      - run: npm test src/components/auth/Login.test.js
 
-  build:
+  deploy:
     needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
       - run: npm install
-      - run: npm run build:login  # Builds only login component
-      - uses: actions/upload-artifact@v3
-        with:
-          name: login-build
-          path: build-login/
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: login-build
+      - run: npm run build
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v25
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--filter=src/components/auth/Login.js'  # Isolate login

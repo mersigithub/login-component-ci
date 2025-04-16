@@ -14,6 +14,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "build": "react-scripts build",
     "build:login": "react-scripts build --entry ./src/components/auth/Login.js --output-dir build-login",
     "test:login": "react-scripts test src/components/auth/Login.test.js",
     "eject": "react-scripts eject"
@@ -37,3 +38,4 @@
     ]
   }
 }
+
